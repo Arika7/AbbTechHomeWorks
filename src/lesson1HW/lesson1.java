@@ -28,5 +28,10 @@ public class lesson1 {
         int finalScore = (int) avgScore;
 
         System.out.println("AvgScore: " + avgScore + "\n" + "FinalScore: " + finalScore);
+
+
     }
+
+
+
 }
