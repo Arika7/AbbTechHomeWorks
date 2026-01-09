@@ -13,6 +13,7 @@ public class Lesson3Task7 {
             }
             }
         char[] letterChars = new char[length];
+        char[] addedLetters = new char[letterChars.length];
         for (int i = 0; i <letterChars.length; i++) {
             letterChars[i] = chars[i];
         }
@@ -27,9 +28,16 @@ public class Lesson3Task7 {
 
             }
 
-
+            boolean contains = false;
+            for (char c : addedLetters){
+                if(c == letterChars[i])
+                {contains = true;
+                    break;
+                }
+            }
+            if(contains) continue;
             System.out.println(letterChars[i]+" - " + count);
-
+            addedLetters[i] = letterChars[i];
             count = 0;
         }
         }
