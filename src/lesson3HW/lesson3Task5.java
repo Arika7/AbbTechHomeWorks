@@ -7,8 +7,7 @@ public class lesson3Task5 {
         String str = "OpenAI";
         char[] chars = str.toCharArray();
 
-        for (int i = 0, j = chars.length-1; j < chars.length; i++, j--) {
-            if(i ==j) break;
+        for (int i = 0, j = chars.length-1; i < chars.length/2; i++, j--) {
             char pivot =chars[i];
             chars[i] =chars[j];
             chars[j] = pivot;

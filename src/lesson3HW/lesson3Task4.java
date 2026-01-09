@@ -17,8 +17,7 @@ public class lesson3Task4 {
             }
         }
 
-        for (int i = 0, j = arr.length-1; i < arr.length; i++, j--) {
-            if(i ==j) break;
+        for (int i = 0, j = arr.length-1; i !=j; i++, j--) {
             int pivot = arr[i];
             arr[i] = arr[j];
             arr[j] = pivot;
