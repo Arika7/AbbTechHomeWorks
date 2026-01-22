@@ -64,16 +64,16 @@ public class SimpleLibrary {
 
     public void displaySortedByDefault() {
         Collections.sort(this.getBookList());
-        this.displayAllBooks();
+        displayAllBooks();
     }
 
     public void displaySortedByAuthor() {
         this.getBookList().sort(new AuthorComparator());
-        this.displayAllBooks();
+        displayAllBooks();
     }
 
     public void displaySortedByYear(){
         this.getBookList().sort(new YearComparator());
-        this.displayAllBooks();
+        displayAllBooks();
     }
 }
