@@ -57,6 +57,18 @@ public class Library<T extends Library.Section> {
             this.year = year;
         }
 
+        public int getYear() {
+            return year;
+        }
+
+        public String getAuthor() {
+            return author;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
         @Override
         public String toString() {
             return "Book{" +
