@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Library<T extends Library.Section> {
 
-    private List<T> sections = new ArrayList<>();
+    private final List<T> sections = new ArrayList<>();
     void addSection(T section){
         sections.add(section);
     }
@@ -18,7 +18,7 @@ public class Library<T extends Library.Section> {
     }
 
     static class Section{
-        private String name;
+        private final String name;
         private final List<Library<?>.Book> books = new ArrayList<>();
 
         public Section(String name) {
@@ -47,9 +47,9 @@ public class Library<T extends Library.Section> {
     }
 
     class Book{
-        private String title;
-        private String author;
-        private int year;
+        private final String title;
+        private final String author;
+        private final int year;
 
         public Book(String title, String author, int year) {
             this.title = title;
