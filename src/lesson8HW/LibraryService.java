@@ -51,4 +51,39 @@ public class LibraryService {
         System.out.println("Books grouped by author (after 1950):");
         byAuthorAfter1950.forEach((author, bk)-> System.out.println(author +"-> "+bk));
     }
+
+    public Optional<Book> findRecommendedBookForUser(User user) {
+        if (user.getBorrowHistory() == null || user.getBorrowHistory().isEmpty()) {
+            return Optional.empty();
+        }
+
+        Map<String, Long> authorCounts = user.getBorrowHistory().stream()
+                .collect(Collectors.groupingBy(r -> r.getBook().getAuthor(), Collectors.counting()));
+
+        Optional<String> mostReadAuthor = authorCounts.entrySet().stream()
+                .max(Map.Entry.<String, Long>comparingByValue()
+                        .thenComparing(Map.Entry.comparingByKey())) // tie-break deterministic
+                .map(Map.Entry::getKey);
+
+        if (mostReadAuthor.isEmpty()) {
+            return Optional.empty();
+        }
+        String author = mostReadAuthor.get();
+
+        return books.stream()
+                .filter(b -> author.equals(b.getAuthor()))
+                .max(Comparator.comparingDouble(Book::getRating));
+
+
+    }
+
+    public Set<String> uniqueAuthorsRead() {
+        Set<String> authors = users.stream()
+                .flatMap(u -> u.getBorrowHistory().stream())
+                .map(r -> r.getBook().getAuthor())
+                .collect(Collectors.toSet());
+
+        System.out.println("\nAuthors read by users: " + authors);
+        return authors;
+    }
 }
