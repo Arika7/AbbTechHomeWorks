@@ -1,0 +1,54 @@
+package lesson8HW;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class LibraryService {
+    List<Book> books;
+    List<User> users;
+
+    public LibraryService(List<Book> books, List<User> users) {
+        this.books = books;
+        this.users = users;
+    }
+
+    public void sortBooks(){
+        System.out.println("Sorted books: \n");
+        Comparator<Book> comparator = Comparator.comparingDouble(Book::getRating).reversed().thenComparingInt(Book::getYear).thenComparing(Book::getTitle);
+        books.sort(comparator);
+        books.forEach(System.out::println);
+    }
+
+    public void analyzeLibrary(){
+        System.out.println("\nLibrary analysis: \n");
+        OptionalDouble avgRating = books.stream().mapToDouble(Book::getRating).average();
+        if(avgRating.isPresent()) System.out.println("Average rating of books: " + avgRating.getAsDouble());
+        else System.out.println("BookList is empty");
+
+        List<Book> booksAvailableAfter2000 = books.stream().filter(b -> b.getYear()>2000 && b.isAvailable()).toList();
+
+        System.out.println("Available books after 2000: " + booksAvailableAfter2000);
+
+        Map<String, Long> borrowCount = users.stream().flatMap(u -> u.getBorrowHistory().stream()).collect(Collectors.groupingBy(b -> b.getBook().getTitle(), Collectors.counting()));
+
+        Optional<Map.Entry<String,Long>> mostBorrowed = borrowCount.entrySet().stream().max(Map.Entry.comparingByValue());
+
+        if(mostBorrowed.isPresent()) System.out.println("Most borrowed book is: " + mostBorrowed.get().getKey() +" "+ mostBorrowed.get().getValue() + " times");
+        else System.out.println("None");
+
+        Map<String, List<Book>> currentlyReading = users.stream()
+                .collect(Collectors.toMap(User::getName, u -> u.getBorrowHistory().stream()
+                                .filter(r -> r.getReturnedDate() == null)
+                                .map(BorrowRecord::getBook)
+                                .collect(Collectors.toList())
+                ));
+        System.out.println("Currently reading: ");
+        currentlyReading.forEach((name, list) -> System.out.println(name +"-> " + list));
+
+        Map<String, List<Book>> byAuthorAfter1950 = books.stream()
+                .filter(b -> b.getYear() > 1950)
+                .collect(Collectors.groupingBy(Book::getAuthor));
+        System.out.println("Books grouped by author (after 1950):");
+        byAuthorAfter1950.forEach((author, bk)-> System.out.println(author +"-> "+bk));
+    }
+}
