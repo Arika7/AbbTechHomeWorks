@@ -86,4 +86,21 @@ public class LibraryService {
         System.out.println("\nAuthors read by users: " + authors);
         return authors;
     }
+
+    public Optional<User> findTopReaderOfMonth(List<User> usersList, int month, int year){
+        return users.stream()
+                .map(u -> new AbstractMap.SimpleEntry<>(
+                        u,
+                        Optional.ofNullable(u.getBorrowHistory()).orElse(Collections.emptyList()).stream()
+                                .filter(r -> r.getBorrowedDate() != null
+                                        && r.getBorrowedDate().getMonthValue() == month
+                                        && r.getBorrowedDate().getYear() == year)
+                                .count()
+                ))
+                .filter(e -> e.getValue() > 0)                 // ← проверка на 0
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey);
+
+
+    }
 }

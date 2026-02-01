@@ -3,6 +3,7 @@ package lesson8HW;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class LibraryMain {
     public static void main(String[] args) {
@@ -35,5 +36,19 @@ public class LibraryMain {
 
         service.sortBooks();
         service.analyzeLibrary();
+        service.uniqueAuthorsRead();
+
+        System.out.println("\nRecommendation for Aydin:");
+        // Java 9+: ifPresentOrElse(...) exists. For Java 8, emulate with isPresent check:
+        Optional<Book> rec = service.findRecommendedBookForUser(u1);
+        if (rec.isPresent()) {
+            System.out.println("Recommended: " + rec.get());
+        } else {
+            System.out.println("No recommendation available.");
+        }
+
+        System.out.println("\nTop Reader of October 2025:");
+        service.findTopReaderOfMonth(users,10, 2025)
+                .ifPresent(u -> System.out.println("Top Reader: " + u.getName()));
     }
 }
