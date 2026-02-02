@@ -62,7 +62,7 @@ public class LibraryService {
 
         Optional<String> mostReadAuthor = authorCounts.entrySet().stream()
                 .max(Map.Entry.<String, Long>comparingByValue()
-                        .thenComparing(Map.Entry.comparingByKey())) // tie-break deterministic
+                        .thenComparing(Map.Entry.comparingByKey()))
                 .map(Map.Entry::getKey);
 
         if (mostReadAuthor.isEmpty()) {
@@ -97,7 +97,7 @@ public class LibraryService {
                                         && r.getBorrowedDate().getYear() == year)
                                 .count()
                 ))
-                .filter(e -> e.getValue() > 0)                 // ← проверка на 0
+                .filter(e -> e.getValue() > 0)
                 .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey);
 
